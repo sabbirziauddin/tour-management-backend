@@ -1,5 +1,5 @@
 import app from "./app";
-import { envVars } from "./config/env";
+import { envVars } from "./app/config/env";
 
 const mongoose = require("mongoose");
 
@@ -18,6 +18,7 @@ const startServer = async () => {
 };
 
 startServer();
+
 //unhandle exeption
 process.on("uncaughtException", (error) => {
   if (server) {
