@@ -13,11 +13,14 @@ export const globalErrorHandler = (
   if (err instanceof AppError) {
     statusCode = err.statusCode;
     message = err.message;
+  } else if (err instanceof Error) {
+    statusCode = 500;
+    message = err.message;
   }
   if (envVars.nodeEnv === "development") {
     res.status(statusCode).json({
       status: "error",
-      message: `something went wrong ${err.message}`,
+      message,
       stack: err.stack,
     });
   } else {

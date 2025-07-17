@@ -5,6 +5,8 @@ import cors from "cors";
 import express from "express";
 import { router } from "./app/routes";
 import { globalErrorHandler } from "./app/middlewares/globalErroHandlers";
+import httpStatus from "http-status-codes";
+import { NotFound } from "./app/middlewares/NotFound";
 
 let app = express();
 app.use(express.json());
@@ -21,5 +23,6 @@ app.use("/api/v1", router);
 
 //global error hanller
 app.use(globalErrorHandler);
+app.use(NotFound);
 
 export default app;
