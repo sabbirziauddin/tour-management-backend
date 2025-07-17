@@ -16,9 +16,9 @@ const loadEnvVars = (): IEnvVars => {
     });
 
     return {
-        port: process.env.PORT || 4000,
-        dbUrl: process.env.DB_URL || "mongodb://localhost:27017/TourBackendDB",
-        nodeEnv: process.env.NODE_ENV || "development",
+      port: process.env.PORT || 4000,
+      dbUrl: process.env.DB_URL as string,
+      nodeEnv: process.env.NODE_ENV || "development",
     };
 
 }
