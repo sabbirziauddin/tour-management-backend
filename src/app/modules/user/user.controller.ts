@@ -3,9 +3,11 @@ import httpStatus from "http-status-codes";
 import { model } from "mongoose";
 import { User } from "./user.model";
 import { UserServices } from "./user.service";
+import AppError from "../../errorHelpers/AppError";
 
 const createUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    // throw new AppError(httpStatus.BAD_REQUEST, "fake error");
     const user = await UserServices.createUserIntoDb(req.body);
 
     res.status(httpStatus.CREATED).json({
