@@ -4,6 +4,8 @@ import { model } from "mongoose";
 import { User } from "./user.model";
 import { UserServices } from "./user.service";
 import AppError from "../../errorHelpers/AppError";
+import { catchAsync } from "../../utils/catchAsync";
+import { sendResponse } from "../../utils/sendResponse";
 
 const createUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -20,6 +22,38 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+//get all user
+const getAllUser = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const user = await UserServices.getAllUsersFromDb();
+    sendResponse(res, {
+      statusCode: 201,
+      success: true,
+      message: "user fetch successfully",
+      data: user,
+    });
+  }
+);
+// const getAllUser = async (
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ) => {
+//   try {
+//     const user = await UserServices.getAllUsersFromDb();
+//     res.status(httpStatus.ACCEPTED).json({
+//       success:true,
+//       message: 'user fetch successfully',
+//       user
+//     })
+
+//   } catch (error) {
+//     next(error)
+
+//   }
+// };
+
 export const userController = {
   createUser,
+  getAllUser,
 };
