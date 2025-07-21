@@ -12,9 +12,9 @@ export  enum ActiveStatus {
     BLOCKED = "BLOCKED",
     PENDING = "PENDING",
 }
-export interface IAuthType{
-    provider: string,
-    providerId: string,
+export interface IAuthType {
+  provider: "google" | "credentials";
+  providerId: string;
 }
 
 export interface IUser {
