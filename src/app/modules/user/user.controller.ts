@@ -1,3 +1,4 @@
+import { verifyJwtToken } from "./../../utils/jwt";
 import { NextFunction, Request, Response } from "express";
 import httpStatus from "http-status-codes";
 import { model } from "mongoose";
@@ -6,20 +7,55 @@ import { UserServices } from "./user.service";
 import AppError from "../../errorHelpers/AppError";
 import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/sendResponse";
-const createUser = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    // throw new Error("Error ");
-    // throw new AppError(httpStatus.BAD_REQUEST, "somthin went wrong");
-    const user = await UserServices.createUserIntoDb(req.body);
+import { envVars } from "../../config/env";
+import { JwtPayload } from "jsonwebtoken";
+// const createUser = async (req: Request, res: Response, next: NextFunction) => {
+//   try {
+//     // throw new Error("Error ");
+//     // throw new AppError(httpStatus.BAD_REQUEST, "somthin went wrong");
+//     const user = await UserServices.createUserIntoDb(req.body);
 
-    res.status(httpStatus.CREATED).json({
+//     res.status(httpStatus.CREATED).json({
+//       message: "User created successfully",
+//       user: user,
+//     });
+//   } catch (err: any) {
+//     next(err);
+//   }
+// };
+const createUser = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const user = await UserServices.createUserIntoDb(req.body);
+    sendResponse(res, {
+      statusCode: httpStatus.CREATED,
+      success: true,
       message: "User created successfully",
-      user: user,
+      data: user,
     });
-  } catch (err: any) {
-    next(err);
   }
-};
+);
+// update user
+const updateUser = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const userId = req.params.id;
+    const token = req.headers.authorization;
+    const verifyToken = verifyJwtToken(token as string, envVars.jwtSecret);
+    const payload = req.body;
+    const decodedToken = verifyToken as JwtPayload;
+
+    const user = await UserServices.updatUserintoDb(
+      userId,
+      payload,
+      decodedToken
+    );
+    sendResponse(res, {
+      statusCode: httpStatus.CREATED,
+      success: true,
+      message: "User updated successfully",
+      data: user,
+    });
+  }
+);
 
 //get all user
 const getAllUser = catchAsync(
@@ -55,4 +91,5 @@ const getAllUser = catchAsync(
 export const userController = {
   createUser,
   getAllUser,
+  updateUser,
 };

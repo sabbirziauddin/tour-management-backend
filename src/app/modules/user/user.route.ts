@@ -1,3 +1,4 @@
+import { validateRequest } from "./../../middlewares/validateRequest";
 import { NextFunction, Request, Response, Router } from "express";
 import { userController } from "./user.controller";
 import { validateRequest } from "../../middlewares/validateRequest";
@@ -8,6 +9,7 @@ import { envVars } from "../../config/env";
 import { Role } from "./user.interface";
 import { verifyJwtToken } from "../../utils/jwt";
 import { checkAuthentication } from "../../middlewares/checkAuth";
+import { object } from "zod";
 
 const router = Router();
 
@@ -20,6 +22,11 @@ router.get(
   "/allusers",
   checkAuthentication(Role.ADMIN, Role.SUPER_ADMIN),
   userController.getAllUser
+);
+router.patch(
+  "/:id",
+  checkAuthentication(...Object.values(Role)),
+  userController.updateUser
 );
 
 export const userRoutes = router;
