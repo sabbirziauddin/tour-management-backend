@@ -6,7 +6,6 @@ import { UserServices } from "./user.service";
 import AppError from "../../errorHelpers/AppError";
 import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/sendResponse";
-
 const createUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     // throw new Error("Error ");

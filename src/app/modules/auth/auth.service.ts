@@ -28,7 +28,11 @@ const loginwithEmailAndPassword = async(payload:Partial<IUser>)=>{
         role:isUserExist.role
     }
    
-    const accessToken = generateJwtToken(jwtPayload,envVars.jwtSecret,envVars.jwtExpiredIn);
+    const accessToken = generateJwtToken(
+      jwtPayload,
+      envVars.jwtSecret,
+      envVars.jwtExpiredIn
+    );
     console.log(accessToken);
     return {
         accessToken,

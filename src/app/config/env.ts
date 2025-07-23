@@ -8,6 +8,8 @@ interface IEnvVars {
   jwtSecret: string;
   jwtExpiredIn: string;
   bcryptSaltRounds: string;
+  superAdminEmail: string;
+  superAdminPassword: string;
 }
 
 const loadEnvVars = (): IEnvVars => {
@@ -18,6 +20,8 @@ const loadEnvVars = (): IEnvVars => {
     "JWT_SECRET",
     "JWT_EXPIRED_IN",
     "BCRYPT_SALT_ROUNDS",
+    "SUPER_ADMIN_EMAIL",
+    "SUPER_ADMIN_PASSWORD",
   ];
   requiredEnvVars.forEach((envVar) => {
     if (!process.env[envVar]) {
@@ -32,6 +36,8 @@ const loadEnvVars = (): IEnvVars => {
     jwtSecret: process.env.JWT_SECRET as string,
     jwtExpiredIn: process.env.JWT_EXPIRED_IN as string,
     bcryptSaltRounds: process.env.BCRYPT_SALT_ROUNDS || "10",
+    superAdminEmail: process.env.SUPER_ADMIN_EMAIL as string,
+    superAdminPassword: process.env.SUPER_ADMIN_PASSWORD as string,
   };
 };
 

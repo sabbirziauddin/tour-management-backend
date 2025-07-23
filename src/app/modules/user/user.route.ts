@@ -1,7 +1,13 @@
-import { Router } from "express";
+import { NextFunction, Request, Response, Router } from "express";
 import { userController } from "./user.controller";
 import { validateRequest } from "../../middlewares/validateRequest";
 import { createUserZodSchema } from "./user.validation";
+import AppError from "../../errorHelpers/AppError";
+import jwt, { JwtPayload } from "jsonwebtoken";
+import { envVars } from "../../config/env";
+import { Role } from "./user.interface";
+import { verifyJwtToken } from "../../utils/jwt";
+import { checkAuthentication } from "../../middlewares/checkAuth";
 
 const router = Router();
 
@@ -10,8 +16,10 @@ router.post(
   validateRequest(createUserZodSchema),
   userController.createUser
 );
-router.get("/allusers", userController.getAllUser);
+router.get(
+  "/allusers",
+  checkAuthentication(Role.ADMIN, Role.SUPER_ADMIN),
+  userController.getAllUser
+);
 
-
-export const userRoutes= router;
- 
+export const userRoutes = router;
