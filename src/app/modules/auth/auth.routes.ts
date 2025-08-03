@@ -6,4 +6,5 @@ import jwt from "jsonwebtoken";
 
 const router = Router();
 router.post("/login", authController.loginwithCredentials);
+router.post("/refresh-token", authController.getNewAccessToken);
 export const AuthRoutes = router;

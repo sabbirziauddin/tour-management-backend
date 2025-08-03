@@ -6,6 +6,8 @@ interface IEnvVars {
   dbUrl: string;
   nodeEnv: string;
   jwtSecret: string;
+  jwtRefreshSecret: string;
+  jwtRefreshExpiredIn: string;
   jwtExpiredIn: string;
   bcryptSaltRounds: string;
   superAdminEmail: string;
@@ -18,7 +20,9 @@ const loadEnvVars = (): IEnvVars => {
     "DB_URL",
     "NODE_ENV",
     "JWT_SECRET",
+    "JWT_REFRESH_SECRET",
     "JWT_EXPIRED_IN",
+    "JWT_REFRESH_EXPIRED_IN",
     "BCRYPT_SALT_ROUNDS",
     "SUPER_ADMIN_EMAIL",
     "SUPER_ADMIN_PASSWORD",
@@ -38,6 +42,8 @@ const loadEnvVars = (): IEnvVars => {
     bcryptSaltRounds: process.env.BCRYPT_SALT_ROUNDS || "10",
     superAdminEmail: process.env.SUPER_ADMIN_EMAIL as string,
     superAdminPassword: process.env.SUPER_ADMIN_PASSWORD as string,
+    jwtRefreshSecret: process.env.JWT_REFRESH_SECRET as string,
+    jwtRefreshExpiredIn: process.env.JWT_REFRESH_EXPIRED_IN as string,
   };
 };
 
