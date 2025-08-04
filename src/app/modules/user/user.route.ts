@@ -1,4 +1,3 @@
-import { validateRequest } from "./../../middlewares/validateRequest";
 import { NextFunction, Request, Response, Router } from "express";
 import { userController } from "./user.controller";
 import { validateRequest } from "../../middlewares/validateRequest";
