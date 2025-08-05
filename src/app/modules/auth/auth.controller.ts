@@ -7,6 +7,7 @@ import { sendResponse } from "../../utils/sendResponse";
 import AppError from "../../errorHelpers/AppError";
 import { envVars } from "../../config/env";
 import { setAuthCookie } from "../../utils/setCookie";
+import { createUserTokens } from '../../utils/userTokens';
 
 const loginwithCredentials = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -84,10 +85,46 @@ const resetPassword = catchAsync(
     });
   }
 );
+//for google callback controller
+// This function handles the callback from Google OAuth after user authentication
+// It retrieves the user information and sets the access and refresh tokens in cookies.
+// Finally, it redirects the user to the specified URL or home page.
+
+const googleCallbackController = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+
+    const user = req.user;
+    console.log("user in google callback form auth controller", user);
+    if (!user) {
+      throw new AppError(httpStatus.UNAUTHORIZED, "User not found");
+    }
+    //set cookies for access and refresh tokens
+    const tokenInfo = createUserTokens(user);
+    setAuthCookie(res, tokenInfo);
+    // Redirect to the original URL or home page
+    let redirectTo = req.query.state ? (req.query.state as string) : "";
+    if (redirectTo.startsWith("/")) {
+      redirectTo = redirectTo.slice(1); // Remove leading slash if present
+    }
+    res.redirect(`${envVars.frontendUrl}/${redirectTo}`);
+
+
+
+
+
+    // sendResponse(res, {
+    //   success: true,
+    //   statusCode: httpStatus.OK,
+    //   message: "password reset successfully",
+    //   data: null,
+    // });
+  }
+);
 
 export const authController = {
   loginwithCredentials,
   getNewAccessToken,
   logoutUser,
-  resetPassword
+  resetPassword,
+  googleCallbackController
 };
